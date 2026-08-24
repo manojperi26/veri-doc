@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+
+# Unit test / coverage reports
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Environments & virtualenvs
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+venv/
+.venv/
+env/
+ENV/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
