@@ -19,6 +19,11 @@ else:
         "https://veri-doc-rho.vercel.app",
     ]
 
+# Ensure Vercel frontend is always allowed to prevent CORS issues
+vercel_origin = "https://veri-doc-rho.vercel.app"
+if vercel_origin not in allowed_origins:
+    allowed_origins.append(vercel_origin)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
