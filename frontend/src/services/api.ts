@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const configuredApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const configuredApiUrl = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8000/api' : 'https://veri-doc-manoj.onrender.com/api');
 const API_URL = configuredApiUrl.replace(/\/+$/, '');
 
 // Maintain persistent session ID
