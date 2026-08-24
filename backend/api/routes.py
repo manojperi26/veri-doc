@@ -135,7 +135,7 @@ async def get_questions(
 
 @router.get("/health")
 async def health():
-    return {"status": "ok"}
+    return {"status": "ok", "version": "v1.0.1"}
 
 # --- API Key Configuration ---
 
