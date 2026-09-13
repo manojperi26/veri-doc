@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, File as FileIcon, Trash2, Loader2 } from 'lucide-react';
 import { api } from '../services/api';
 import { DocumentMetadata } from '../types';
@@ -34,20 +35,20 @@ export function Sidebar({ documents, onUploadComplete, onReset }: SidebarProps) 
     };
 
     return (
-        <div className="w-80 border-r border-border bg-card flex flex-col h-full">
+        <div className="w-80 border-r border-black/[0.06] bg-white/60 backdrop-blur-xl flex flex-col h-full">
             <div className="p-6">
-                <div className="flex items-center gap-3 text-primary mb-2">
-                    <div className="w-8 h-8 rounded bg-primary text-primary-foreground flex items-center justify-center font-bold text-xl">V</div>
-                    <h1 className="text-xl font-bold tracking-tight">VeriDoc AI</h1>
+                <div className="flex items-center gap-3 mb-2">
+                    <div className="w-9 h-9 rounded-xl bg-[#0A84FF] text-white flex items-center justify-center font-bold text-lg shadow-[0_4px_16px_rgba(10,132,255,0.4)]">V</div>
+                    <h1 className="text-xl font-bold tracking-tight text-gradient">VeriDoc AI</h1>
                 </div>
                 <p className="text-sm text-muted-foreground">Grounded Document Intelligence</p>
             </div>
             
             <div className="flex-1 overflow-y-auto px-4">
                 <div className="mb-4">
-                    <label className="flex items-center justify-center w-full p-4 border-2 border-dashed border-border rounded-lg hover:border-primary/50 hover:bg-muted/50 cursor-pointer transition-colors">
+                    <label className="flex items-center justify-center w-full p-4 border-2 border-dashed border-black/10 rounded-2xl hover:border-[#0A84FF]/40 hover:bg-[#0A84FF]/[0.03] cursor-pointer transition-colors duration-200">
                         <span className="flex items-center gap-2 text-sm font-medium">
-                            {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span className="text-lg">+</span>}
+                            {uploading ? <Loader2 className="w-4 h-4 animate-spin text-[#0A84FF]" /> : <span className="text-lg text-[#0A84FF]">+</span>}
                             Add Documents
                         </span>
                         <input type="file" className="hidden" onChange={handleFileChange} accept=".pdf,.docx,.pptx,.txt" />
@@ -55,27 +56,36 @@ export function Sidebar({ documents, onUploadComplete, onReset }: SidebarProps) 
                 </div>
                 
                 <div className="space-y-2">
-                    {documents.map(doc => (
-                        <div key={doc.id} className="p-3 rounded-lg border border-border bg-background group flex items-start justify-between">
-                            <div className="flex items-start gap-3 overflow-hidden">
-                                <div className="mt-1 opacity-70">
-                                    {doc.type === 'pdf' ? <FileText className="w-4 h-4" /> : <FileIcon className="w-4 h-4" />}
+                    <AnimatePresence initial={false}>
+                        {documents.map(doc => (
+                            <motion.div
+                                key={doc.id}
+                                initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.96 }}
+                                transition={{ duration: 0.25, ease: 'easeOut' }}
+                                className="p-3 rounded-xl card-glass card-glass-hover group flex items-start justify-between"
+                            >
+                                <div className="flex items-start gap-3 overflow-hidden">
+                                    <div className="mt-1 text-[#0A84FF] opacity-80">
+                                        {doc.type === 'pdf' ? <FileText className="w-4 h-4" /> : <FileIcon className="w-4 h-4" />}
+                                    </div>
+                                    <div className="overflow-hidden">
+                                        <p className="text-sm font-medium truncate" title={doc.name}>{doc.name}</p>
+                                        <p className="text-xs text-muted-foreground">{doc.pages} pages • {doc.status}</p>
+                                    </div>
                                 </div>
-                                <div className="overflow-hidden">
-                                    <p className="text-sm font-medium truncate" title={doc.name}>{doc.name}</p>
-                                    <p className="text-xs text-muted-foreground">{doc.pages} pages • {doc.status}</p>
-                                </div>
-                            </div>
-                            <button onClick={() => handleDelete(doc.id)} className="opacity-0 group-hover:opacity-100 p-1 hover:bg-muted rounded text-muted-foreground transition-all">
-                                <Trash2 className="w-4 h-4" />
-                            </button>
-                        </div>
-                    ))}
+                                <button onClick={() => handleDelete(doc.id)} className="opacity-0 group-hover:opacity-100 p-1 hover:bg-black/5 rounded text-muted-foreground transition-all">
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
                 </div>
             </div>
             
-            <div className="p-4 border-t border-border mt-auto">
-                <button onClick={onReset} className="w-full py-2 px-4 rounded text-sm font-medium text-destructive-foreground bg-destructive/90 hover:bg-destructive transition-colors">
+            <div className="p-4 border-t border-black/[0.06] mt-auto">
+                <button onClick={onReset} className="w-full py-2 px-4 rounded-xl text-sm font-medium text-white bg-red-500/90 hover:bg-red-500 active:scale-[0.98] transition-all">
                     Reset Session
                 </button>
             </div>

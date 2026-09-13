@@ -4,29 +4,29 @@
 
 @layer base {
   :root {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+    --background: 210 20% 98%;
+    --foreground: 222 20% 14%;
 
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
+    --muted: 210 16% 93%;
+    --muted-foreground: 220 9% 46%;
 
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
+    --primary: 211 100% 50%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 210 20% 95%;
+    --secondary-foreground: 222 20% 14%;
 
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 20% 14%;
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 4 80% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --ring: 216 34% 17%;
-    --radius: 0.5rem;
+    --ring: 211 100% 50%;
+    --radius: 1rem;
   }
 }
 
@@ -36,5 +36,34 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Subtle Apple-blue accent text, not a loud gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-[#0A84FF] to-[#5E9BFF] bg-clip-text text-transparent;
+  }
+
+  /* Apple-style glass CTA: translucent white, blue tint on hover */
+  .btn-gradient {
+    @apply bg-[#0A84FF] text-white shadow-[0_4px_20px_rgba(10,132,255,0.35)] hover:bg-[#0A74FF] hover:shadow-[0_6px_24px_rgba(10,132,255,0.45)] active:scale-[0.98] transition-all duration-200;
+  }
+
+  /* Frosted glass panel — the core "Apple glassmorphism" surface */
+  .card-glass {
+    @apply bg-white/70 border border-black/[0.06] backdrop-blur-xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.06)];
+  }
+
+  .card-glass-hover {
+    @apply hover:bg-white/85 hover:shadow-[0_12px_40px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 transition-all duration-300 ease-out;
+  }
+
+  /* Plain, crisp light backdrop — no dot grid, just soft color wash top corners */
+  .bg-glow {
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(circle at 20% -10%, rgba(10, 132, 255, 0.06), transparent 40%),
+      radial-gradient(circle at 100% 10%, rgba(94, 155, 255, 0.05), transparent 35%);
   }
 }

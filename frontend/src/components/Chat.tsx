@@ -99,13 +99,13 @@ export function Chat({ messages, setMessages, onDebugData, hasDocuments }: ChatP
                 <div className="max-w-3xl mx-auto w-full">
                     <form 
                         onSubmit={handleSend}
-                        className="relative flex items-center shadow-lg bg-card border border-border rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all"
+                        className="relative flex items-center card-glass rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-[#0A84FF]/40 transition-all duration-200"
                     >
                         <textarea
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            placeholder={hasDocuments ? "Ask a question..." : "Upload documents to begin"}
+                            placeholder={hasDocuments ? "Ask something about your documents..." : "Upload documents to begin"}
                             disabled={!hasDocuments || loading}
                             className="w-full max-h-40 min-h-[60px] py-4 pl-4 pr-14 bg-transparent outline-none resize-none text-sm placeholder:text-muted-foreground disabled:opacity-50"
                             rows={1}
@@ -113,7 +113,7 @@ export function Chat({ messages, setMessages, onDebugData, hasDocuments }: ChatP
                         <button 
                             type="submit"
                             disabled={!input.trim() || !hasDocuments || loading}
-                            className="absolute right-3 bottom-3 p-2 rounded-lg bg-primary text-primary-foreground disabled:opacity-50 disabled:bg-muted disabled:text-muted-foreground transition-colors hover:bg-primary/90"
+                            className="absolute right-3 bottom-3 p-2 rounded-xl btn-gradient disabled:opacity-40 disabled:grayscale transition-all"
                         >
                             <Send className="w-4 h-4" />
                         </button>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Sidebar } from './components/Sidebar';
 import { Chat } from './components/Chat';
 import { SettingsPanel } from './components/SettingsPanel';
 import { api } from './services/api';
 import { DocumentMetadata, Message } from './types';
-import { Info, Settings } from 'lucide-react';
+import { Info, Settings, FileStack, Sparkles, Quote, ShieldCheck } from 'lucide-react';
 
 function App() {
   const [documents, setDocuments] = useState<DocumentMetadata[]>([]);
@@ -61,19 +62,21 @@ function App() {
   };
 
   return (
-    <div className="flex h-screen bg-background text-foreground overflow-hidden font-sans">
+    <div className="flex h-screen bg-glow text-foreground overflow-hidden font-sans">
       <Sidebar 
         documents={documents} 
         onUploadComplete={fetchDocuments} 
         onReset={handleReset} 
       />
       
-      <main className="flex-1 relative">
+      <main className="flex-1 relative overflow-y-auto">
         <div className="absolute top-4 right-4 z-10 flex gap-2">
           <button 
             onClick={() => setShowSettings(!showSettings)}
-            className={`p-2 rounded-md border border-border hover:bg-muted transition-colors flex items-center gap-2 text-sm text-muted-foreground ${
-              !keysConfigured ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 animate-pulse' : 'bg-card'
+            className={`p-2 rounded-xl border hover:bg-black/5 transition-colors flex items-center gap-2 text-sm ${
+              !keysConfigured
+                ? 'bg-amber-500/10 border-amber-500/30 text-amber-600 animate-pulse'
+                : 'card-glass text-muted-foreground'
             }`}
           >
             <Settings className="w-4 h-4" />
@@ -82,7 +85,7 @@ function App() {
           {debugData && (
             <button 
               onClick={() => setShowPanel(!showPanel)}
-              className="p-2 rounded-md bg-card border border-border hover:bg-muted transition-colors flex items-center gap-2 text-sm text-muted-foreground"
+              className="p-2 rounded-xl card-glass hover:bg-black/5 transition-colors flex items-center gap-2 text-sm text-muted-foreground"
             >
               <Info className="w-4 h-4" />
               {showPanel ? 'Hide Details' : 'Retrieval Details'}
@@ -95,16 +98,53 @@ function App() {
             <SettingsPanel onConfigured={handleConfigured} />
           </div>
         ) : !keysConfigured ? (
-          <div className="flex flex-col items-center justify-center h-full text-center p-8">
-            <h2 className="text-2xl font-bold tracking-tight mb-3">Welcome to VeriDoc AI</h2>
-            <p className="text-muted-foreground mb-6">To get started, configure your Groq (Primary) and Hugging Face (Backup) API keys.</p>
-            <button
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="flex flex-col items-center justify-center min-h-full text-center px-8 py-16"
+          >
+            <h1 className="text-5xl font-bold tracking-tight mb-2 text-foreground">
+              Your Documents,
+              <br />
+              <span className="text-gradient">Deeper Insights.</span>
+            </h1>
+            <p className="text-muted-foreground max-w-md mt-4 mb-10">
+              Configure your Groq (Primary) and Hugging Face (Backup) API keys to start asking grounded, cited questions of your own documents.
+            </p>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-3xl">
+              {[
+                { icon: FileStack, title: 'Multiple Formats', sub: 'PDF, DOCX, PPTX, TXT' },
+                { icon: Sparkles, title: 'AI-Powered', sub: 'Ask anything about your documents' },
+                { icon: Quote, title: 'Citations', sub: 'See exact source and page' },
+                { icon: ShieldCheck, title: 'Grounded Answers', sub: 'No hallucinated facts' },
+              ].map(({ icon: Icon, title, sub }, i) => (
+                <motion.div
+                  key={title}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 + i * 0.08, ease: 'easeOut' }}
+                  className="card-glass card-glass-hover rounded-2xl p-5 flex flex-col items-center text-center"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-[#0A84FF]/10 border border-[#0A84FF]/15 flex items-center justify-center mb-3">
+                    <Icon className="w-5 h-5 text-[#0A84FF]" />
+                  </div>
+                  <p className="text-sm font-semibold">{title}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{sub}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => setShowSettings(true)}
-              className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors shadow-md"
+              className="px-6 py-3 rounded-xl btn-gradient font-medium"
             >
               Configure API Keys
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         ) : (
           <Chat 
             messages={messages} 
